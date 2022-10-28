@@ -51,12 +51,12 @@ public class LandingPage {
     }
 
     // Метод для нажатия по кнопке Заказать
-    public void clickOrderButton(int x){
-        if (x == 0) {
+    public void clickOrderButton(int buttonNumber){
+        if (buttonNumber == Const.BUTTON_UP) {
             new WebDriverWait(driver, Duration.ofSeconds(Const.TIME_OUT_IN_SECONDS)).
                     until(ExpectedConditions.visibilityOf(headButton));
             headButton.click();
-        } else if (x == 1) {
+        } else if (buttonNumber == Const.BUTTON_DOWN) {
             ((JavascriptExecutor)driver).executeScript(locatorScroll, middleButton);
             new WebDriverWait(driver, Duration.ofSeconds(Const.TIME_OUT_IN_SECONDS)).
                     until(ExpectedConditions.visibilityOf(middleButton));
