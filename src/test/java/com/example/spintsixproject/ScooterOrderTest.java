@@ -26,6 +26,7 @@ public class ScooterOrderTest {
     private final String date;
     private final String comment;
     private final String verifyText;
+    private final int button;
 
 
     public ScooterOrderTest(
@@ -36,7 +37,9 @@ public class ScooterOrderTest {
             String phone,
             String date,
             String comment,
-            String verifyText)
+            String verifyText,
+            int button
+    )
     {
         this.userName = userName;
         this.surname = surname;
@@ -46,17 +49,18 @@ public class ScooterOrderTest {
         this.date = date;
         this.comment= comment;
         this.verifyText = verifyText;
+        this.button = button;
     }
-
-
 
     @Parameterized.Parameters
     public static Object[] getSumData()
     {
         return new Object[][]
-                { // передали тестовые данные
-                        {"Костя", "Асалин", "Москва", "сокольники", "+79636563763", "30.10.2022", "Позвонить за час", "Заказ оформлен"},
-                        {"Артем", "Тарасов", "Москва", "черкизовская", "+79853654102", "29.10.2022", "Позвонить за пол часа", "Заказ оформлен"},
+                { // передали  тестовые данные (во втором наборе, другой формат номера, и отсутствует заполнение обязательного поля с комментарием"
+                        {"Костя", "Асалин", "Москва", "сокольники", "+79636563763", "30.10.2022", "Позвонить за час", "Заказ оформлен", Const.BUTTON_UP},
+                        {"Артем", "Тарасов", "Москва", "черкизовская", "89853654102", "29.10.2022", "", "Заказ оформлен", Const.BUTTON_UP},
+                        {"Костя", "Асалин", "Москва", "сокольники", "+79636563763", "30.10.2022", "Позвонить за час", "Заказ оформлен", Const.BUTTON_DOWN},
+                        {"Артем", "Тарасов", "Москва", "черкизовская", "89853654102", "29.10.2022", "", "Заказ оформлен", Const.BUTTON_DOWN},
                 };
     }
 
@@ -67,7 +71,7 @@ public class ScooterOrderTest {
         driver.get(Const.LANDING_PAGE_URL);
     }
 
-    // Проверка заказа самоката по кнопке вверху
+    // Проверка заказа самоката
     @Test
     public void testClickUpButton() throws InterruptedException {
         ScooterOrderWho scooterOrderWho = new ScooterOrderWho(driver);
@@ -75,7 +79,7 @@ public class ScooterOrderTest {
         LandingPage landingPage = new LandingPage(driver);
 
         // Клик на верхнюю кнопку Заказать
-        landingPage.clickHeadButton();
+        landingPage.clickOrderButton(button);
 
         // Заполняем данные на странице Для кого самокат
         scooterOrderWho.setOrderWho(userName, surname, address, metro, phone);
@@ -95,36 +99,6 @@ public class ScooterOrderTest {
         // Проверяем, что заказ успешно оформлен
         scooterOrderRent.isOrderIsProcessed(verifyText);
 
-    }
-
-    // Проверка заказа самоката по кнопке внизу
-    @Test
-    public void testClickDownButton() throws InterruptedException {
-
-        ScooterOrderWho scooterOrderWho = new ScooterOrderWho(driver);
-        ScooterOrderRent scooterOrderRent = new ScooterOrderRent(driver);
-        LandingPage landingPage = new LandingPage(driver);
-
-        // Клик на нижнюю кнопку Заказать
-        landingPage.clickMiddleButton();
-
-        // Заполняем данные на странице Для кого самокат
-        scooterOrderWho.setOrderWho(userName, surname, address, metro, phone);
-
-        // нажимаем на кнопку далее
-        scooterOrderWho.clickButtonNext();
-
-        // Заполняем данные на странице Про аренду
-        scooterOrderRent.setAboutRent(date, comment);
-
-        // Нажимаем кнопку Заказать
-        scooterOrderRent.clickOrderButton();
-
-        // Нажимаем кнопку Да
-        scooterOrderRent.clickYesButton();
-
-        // Проверяем, что заказ успешно оформлен
-        scooterOrderRent.isOrderIsProcessed(verifyText);
     }
 
     // Завершаем работу драйвера

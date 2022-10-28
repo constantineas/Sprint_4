@@ -65,13 +65,12 @@ public class LandingPageTest {
     // Параметризированный тест проверки списка "Вопросы о важном"
     @Test
     public void questionsMenu() {
-        String expectedText = qaText;
         LandingPage questionsFaq = new LandingPage(driver, count);
         scrollDown.scrollPageDown();
         questionsFaq.listClassName.get(count).click();
         questionsFaq.waitForLoadQuestion();
         String actual = questionsFaq.accordionPanel.get(count).getText();
-        Assert.assertEquals(expectedText, actual);
+        Assert.assertEquals(qaText, actual);
     }
 
 }

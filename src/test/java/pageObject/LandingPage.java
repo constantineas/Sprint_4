@@ -50,19 +50,19 @@ public class LandingPage {
 
     }
 
-    // Метод для нажатия по кнопке сверху Заказать
-    public void clickHeadButton(){
-        new WebDriverWait(driver, Duration.ofSeconds(Const.TIME_OUT_IN_SECONDS)).
-                until(ExpectedConditions.visibilityOf(headButton));
-        headButton.click();
-    }
+    // Метод для нажатия по кнопке Заказать
+    public void clickOrderButton(int x){
+        if (x == 0) {
+            new WebDriverWait(driver, Duration.ofSeconds(Const.TIME_OUT_IN_SECONDS)).
+                    until(ExpectedConditions.visibilityOf(headButton));
+            headButton.click();
+        } else if (x == 1) {
+            ((JavascriptExecutor)driver).executeScript(locatorScroll, middleButton);
+            new WebDriverWait(driver, Duration.ofSeconds(Const.TIME_OUT_IN_SECONDS)).
+                    until(ExpectedConditions.visibilityOf(middleButton));
+            middleButton.click();
+        }
 
-    // Метод для нажатия по кнопке снизу Заказать
-    public void clickMiddleButton(){
-        ((JavascriptExecutor)driver).executeScript(locatorScroll, middleButton);
-        new WebDriverWait(driver, Duration.ofSeconds(Const.TIME_OUT_IN_SECONDS)).
-                until(ExpectedConditions.visibilityOf(middleButton));
-        middleButton.click();
     }
 
     // Конструктор
